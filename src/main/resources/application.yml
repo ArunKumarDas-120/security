@@ -1,0 +1,19 @@
+server:
+  port: 1111
+  
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+  datasource:
+    username: sa
+    password:
+    url: jdbc:h2:tcp://localhost:3000/./databases/target
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      dialect : org.hibernate.dialect.H2Dialect
+ 
