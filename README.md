@@ -7,5 +7,5 @@ Configuring H2 DataBase
 2) Copy h2 inside the directory.
 3) create one more directory to store database files <drive:\H2Database\databases>
 4) run command:- java -cp h2.jar org.h2.tools.Server -web -webPort 2000 -webAllowOthers -tcp -tcpAllowOthers -tcpPort 3000
-   this will h2 database in server mode
+   this will start h2 database in server mode
  
