@@ -11,14 +11,16 @@
 	<div id="Html1"
 		style="position: absolute; left: 78px; top: 63px; width: 673px; height: 98px; z-index: 0">
 	</div>
-	<input type="button" id="Button1" name="" value="Search"
+	<form method="get" action="/admin/searc/user">
+	<input type="submit" id="Button1" name="" value="Search"
 		style="position: absolute; left: 541px; top: 101px; width: 121px; height: 30px; z-index: 1;">
 	<input type="text" id="Editbox1"
 		style="position: absolute; left: 341px; top: 101px; width: 165px; height: 18px; z-index: 2;"
-		name="Editbox1" value="" spellcheck="false">
+		name="criteria" value="" spellcheck="false">
 	<label for="" id="Label1"
 		style="position: absolute; left: 172px; top: 97px; width: 128px; height: 22px; line-height: 22px; z-index: 3;">User
 		Name</label>
+	</form>
 	<table
 		style="position: absolute; left: 68px; top: 200px; width: 1000px; height: 28px; z-index: 4;"
 		id="Table1">

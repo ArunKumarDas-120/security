@@ -1,7 +1,10 @@
 package com.target.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -13,7 +16,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.target.dao.UserRepository;
-import com.target.entity.Role;
+import com.target.dto.UserDto;
+import com.target.entity.RoleEntity;
+import com.target.util.BeanConverter;
 
 @Service
 public class UserVerificationService implements UserDetailsService {
@@ -30,7 +35,7 @@ public class UserVerificationService implements UserDetailsService {
 
 		return userRepository.findByUserName(username).map(u -> {
 			Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-			for (Role role : u.getRoles()) {
+			for (RoleEntity role : u.getRoles()) {
 				grantedAuthorities.add(new SimpleGrantedAuthority(role.getRoleName()));
 			}
 			org.springframework.security.core.userdetails.User user = new org.springframework.security.core.userdetails.User(
@@ -39,4 +44,10 @@ public class UserVerificationService implements UserDetailsService {
 		}).orElseThrow(() -> new UsernameNotFoundException(username));
 	}
 
+	@Transactional
+	public List<UserDto> searchUser(final String name) {
+		return userRepository.findUser(name).map(u -> {
+			return u.stream().map(x -> BeanConverter.mapObject(x, UserDto.class)).collect(Collectors.toList());
+		}).orElse(new ArrayList<>());
+	}
 }
