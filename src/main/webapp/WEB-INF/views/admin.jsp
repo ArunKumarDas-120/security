@@ -7,8 +7,8 @@
 <meta charset="ISO-8859-1">
 <title>Admin</title>
 <link href="/resources/css/admin.css" rel="stylesheet">
+<script type="text/javascript" src="/resources/script/jquery.js"></script>
 <script type="text/javascript" src="/resources/script/admin.js"></script>
-<script type="text/javascript" src="/resources/script/jquery-3.3.1.js"></script>
 </head>
 <body>
 	<div id="Html1"
