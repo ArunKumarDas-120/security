@@ -1,10 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@include file="/WEB-INF/views/common.jsp"%>
-<link href="/resources/css/inventorymanagmanet.css" rel="stylesheet"
-	type="text/css">
-<script type="text/javascript"
-	src="/resources/script/inventorymanagment.js"></script>
+<link href="/resources/css/inventorymanagmanet.css" rel="stylesheet" type="text/css">
+<link href="/resources/css/inventorymanagmentserach.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/resources/script/inventorymanagment.js"></script>
 <div style="width: 100%; height: 100%;">
 	<h2>Manage Inventory</h2>
 	<div class="menu-tab">
@@ -21,18 +19,27 @@
 			<h3>Add category</h3>
 			<hr>
 			<div>
-			<form id="addCategoryForm" name="categoryDto">
-				<input type="text" placeholder="Category" name="catagoryName"
-					value="" id="catagoryName" required>
-					<button type="button" onclick="add('addcategory','addCategoryForm')">
-					Add</button>
-			</form>
-				
+				<form id="addCategoryForm" name="categoryDto">
+					<input type="text" placeholder="Category" name="catagoryName"
+						value="" id="catagoryName" required>
+					<button type="button"
+						onclick="add('addcategory','addCategoryForm')">Add</button>
+				</form>
+
 			</div>
 		</div>
 		<div id="modify" class="action-menu-tabcontent close">
 			<h3>update category</h3>
 			<hr>
+			<div class="chat-popup">
+			  <form action="" >
+			    <label for="msg"><b>Search</b></label>
+			    <input type="text" placeholder="Type Criteria...."  class='serach' required>
+			    <button type="submit" class="btn">Search</button>
+			    <button type="button" class="btn cancel close-search">Close</button>
+			  </form>
+			</div>
+			<button class="open-button" >Search</button>
 		</div>
 	</div>
 	<div id="company" class="menu-tabcontent close">
@@ -47,6 +54,16 @@
 		<div id="modify" class="action-menu-tabcontent close">
 			<h3>update company</h3>
 			<hr>
+			<div class="chat-popup">
+			  <form action="" >
+			    <label for="msg"><b>Search</b></label>
+			    <input type="text" placeholder="Type Criteria...."  class='serach' required>
+			    <button type="submit" class="btn">Search</button>
+			    <button type="button" class="btn cancel close-search">Close</button>
+			  </form>
+			</div>
+			<button class="open-button" >Search</button>
+			
 		</div>
 	</div>
 	<div id="product" class="menu-tabcontent close">
@@ -61,6 +78,15 @@
 		<div id="modify" class="action-menu-tabcontent close">
 			<h3>update product</h3>
 			<hr>
+			<div class="chat-popup">
+			  <form action="" >
+			    <label for="msg"><b>Search</b></label>
+			    <input type="text" placeholder="Type Criteria...."  class='serach' required>
+			    <button type="submit" class="btn">Search</button>
+			    <button type="button" class="btn cancel close-search">Close</button>
+			  </form>
+			</div>
+			<button class="open-button" >Search</button>
 		</div>
 	</div>
 </div>

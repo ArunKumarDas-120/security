@@ -27,7 +27,13 @@ $('button.menu').click( function() {
 		}
 		});
 	}
-	/* Action Menu and tab End */
+	/* Action Menu and tab End */	
+	$('.open-button').click(function (){
+		$($(this).parent().children('div.chat-popup')).css('display', 'block');
+	});
+	$('.close-search').click(function (){
+		$($(this).parent()).parent('div.chat-popup').css('display', 'none');
+	});
 	
 	/* Document ready end */
 });
