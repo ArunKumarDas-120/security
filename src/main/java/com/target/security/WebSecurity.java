@@ -12,30 +12,27 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
 	private final UserDetailsService userDetailsService;
 	private final PasswordEncoder passWordEncoder;
+	private final DataBaseAuthenticationProvider dbAuthenticationProvider;
 
-	public WebSecurity(final UserDetailsService userDetailsService, final PasswordEncoder passWordEncoder) {
+	public WebSecurity(final UserDetailsService userDetailsService, final PasswordEncoder passWordEncoder,
+			final DataBaseAuthenticationProvider dbAuthenticationProvider) {
 		this.userDetailsService = userDetailsService;
 		this.passWordEncoder = passWordEncoder;
+		this.dbAuthenticationProvider = dbAuthenticationProvider;
 	}
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(passWordEncoder);
+		auth.authenticationProvider(dbAuthenticationProvider);
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable()
-		.authorizeRequests()
-		.antMatchers("/","/resources/**")
-		.permitAll()
-		.anyRequest()
-		.authenticated()
-		.and()
-		.formLogin().loginPage("/login")
-		.usernameParameter("userName")
-		.passwordParameter("password")
-		.permitAll();
+		http.csrf().disable().authorizeRequests()
+				.antMatchers("/","/resources/**", "/registrationUI/**", "/register/**").permitAll().anyRequest()
+				.authenticated().and().formLogin().loginPage("/login").usernameParameter("userName")
+				.passwordParameter("password").permitAll();
 
 	}
 

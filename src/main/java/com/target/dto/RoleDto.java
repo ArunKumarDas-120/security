@@ -22,11 +22,11 @@ public class RoleDto {
 		this.roleName = roleName;
 	}
 
-	public boolean isActiveRole() {
+	public boolean getIsActiveRole() {
 		return isActiveRole;
 	}
 
-	public void setActiveRole(boolean isActiveRole) {
+	public void setIsActiveRole(boolean isActiveRole) {
 		this.isActiveRole = isActiveRole;
 	}
 
