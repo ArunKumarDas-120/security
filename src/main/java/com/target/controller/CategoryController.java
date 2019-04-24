@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.target.dto.CategoryDto;
 import com.target.service.CategoryService;
@@ -26,9 +27,9 @@ public class CategoryController {
 	}
 
 	@ResponseBody
-	@PostMapping(value = { "/add" },produces = {MediaType.APPLICATION_JSON_VALUE})
+	@PostMapping(value = { "/add" }, produces = { MediaType.APPLICATION_JSON_VALUE })
 	@PreAuthorize("hasAuthority('Admin')")
-	public Map<String,String> addCategory(@ModelAttribute("categoryDto") final CategoryDto categoryDto) {
+	public Map<String, String> addCategory(@ModelAttribute("categoryDto") final CategoryDto categoryDto) {
 		return categoryService.addCategory(categoryDto);
 	}
 
@@ -36,6 +37,13 @@ public class CategoryController {
 	@PreAuthorize("hasAuthority('Admin')")
 	public void updateCategory(@ModelAttribute("categoryDto") final CategoryDto categoryDto) {
 		categoryService.updateCategory(categoryDto);
+	}
+
+	@PostMapping(value = { "/search" })
+	public ModelAndView search(@ModelAttribute("categoryDto") final CategoryDto categoryDto) {
+		ModelAndView mav = new ModelAndView("categorySearchresult");
+		mav.addObject("result", categoryService.searchCategory(categoryDto));
+		return mav;
 	}
 
 	@GetMapping(value = { "/{id}" })

@@ -15,24 +15,31 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.target.constants.TargetConstnats;
 import com.target.dto.UserDto;
+import com.target.service.CategoryService;
+import com.target.service.CompanyService;
 import com.target.service.UserVerificationService;
 
 @Controller
 public class AccessController {
 
 	private final UserVerificationService userService;
+	private final CompanyService companyService;
+	private final CategoryService categoryService;
 	private final PasswordEncoder passWordEncoder;
 
-	public AccessController(final UserVerificationService userService, final PasswordEncoder passWordEncoder) {
+	public AccessController(final UserVerificationService userService, final PasswordEncoder passWordEncoder,
+			final CompanyService companyService, final CategoryService categoryService) {
 		this.userService = userService;
 		this.passWordEncoder = passWordEncoder;
+		this.categoryService = categoryService;
+		this.companyService = companyService;
 	}
 
 	@RequestMapping(value = { "/target" }, method = { RequestMethod.GET })
 	public String home() {
 		return "home";
 	}
-	
+
 	@RequestMapping(value = { "/login" }, method = { RequestMethod.GET })
 	public String login() {
 		return "login";
@@ -42,10 +49,13 @@ public class AccessController {
 	public String registrationUI() {
 		return "register";
 	}
-	
+
 	@RequestMapping(value = { "/inventory" }, method = { RequestMethod.POST })
-	public String manageInventoryUI() {
-		return "manageinventory";
+	public ModelAndView manageInventoryUI() {
+		ModelAndView mav = new ModelAndView("manageinventory");
+		mav.addObject("listOfCompany", companyService.getAllCompany());
+		mav.addObject("listOfCategory", categoryService.getAllCategory());
+		return mav;
 	}
 
 	@PostMapping(value = { "/register" })

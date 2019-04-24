@@ -45,6 +45,11 @@ public class CategoryService {
 				.orElseGet(() -> new CategoryDto());
 	}
 
+	public List<CategoryDto> searchCategory(final CategoryDto categoryDto) {
+		return categoryRepo.findByCatagoryNameContaining(categoryDto.getCatagoryName()).stream()
+				.map(cat -> BeanConverter.mapObject(cat, CategoryDto.class)).collect(Collectors.toList());
+	}
+	
 	public List<CategoryDto> getAllCategory() {
 		return categoryRepo.findAll().stream().map(cat -> BeanConverter.mapObject(cat, CategoryDto.class))
 				.collect(Collectors.toList());

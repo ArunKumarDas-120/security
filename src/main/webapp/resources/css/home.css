@@ -6,28 +6,6 @@ body , a {
 * {
 	box-sizing: border-box;
 }
-/* Full-width input fields */
-input[type=text] {
-	width: 20%;
-	padding: 15px;
-	margin: 5px 0 22px 0;
-	display: inline-block;
-	border: none;
-	background: #f1f1f1;
-}
-button {
-	background-color: #4CAF50;
-	color: white;
-	padding: 14px 20px;
-	margin: 8px 0;
-	border: none;
-	cursor: pointer;
-	width: 24%;
-}
-
-button:hover {
-	opacity: 1;
-}
 
 .sidenav {
 	height: 100%;

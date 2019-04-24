@@ -1,12 +1,14 @@
 package com.target.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
-
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import com.target.constants.TargetConstnats;
 import com.target.dao.CompanyRepo;
 import com.target.dto.CompanyDto;
 import com.target.entity.CompanyEntity;
@@ -21,12 +23,19 @@ public class CompanyService {
 		this.companyRepo = companyRepo;
 	}
 
-	@Transactional
-	public void addCompany(final CompanyDto companyDto) {
-		companyRepo.save(BeanConverter.mapObject(companyDto, CompanyEntity.class));
+	public Map<String, String> addCompany(final CompanyDto companyDto) {
+		Map<String, String> result = new HashMap<>();
+		try {
+			companyRepo.save(BeanConverter.mapObject(companyDto, CompanyEntity.class));
+			result.put(TargetConstnats.SCUCCESS, "Company Added..");
+		} catch (DataIntegrityViolationException e) {
+			result.put(TargetConstnats.ERROR, "Company already exists");
+		} catch (Exception e) {
+			result.put(TargetConstnats.ERROR, "Fail to save.System issue");
+		}
+		return result;
 	}
 
-	@Transactional
 	public void updateCompany(final CompanyDto companyDto) {
 		companyRepo.save(BeanConverter.mapObject(companyDto, CompanyEntity.class));
 	}
@@ -36,6 +45,11 @@ public class CompanyService {
 			CompanyDto comp = new CompanyDto();
 			return comp;
 		});
+	}
+
+	public List<CompanyDto> searchCompany(final CompanyDto companyDto) {
+		return companyRepo.findByCompanyNameContaining(companyDto.getCompanyName()).stream()
+				.map(c -> BeanConverter.mapObject(c, CompanyDto.class)).collect(Collectors.toList());
 	}
 
 	public List<CompanyDto> getAllCompany() {

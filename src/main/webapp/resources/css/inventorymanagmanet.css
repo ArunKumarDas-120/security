@@ -21,20 +21,21 @@
 	text-align: left;
 	cursor: pointer;
 	transition: 0.3s;
+	color: white;
 	font-size: 17px;
 }
 
 .menu-tab button.active {
-  background-color: DodgerBlue;
+	background-color: DodgerBlue;
 }
-.menu-tab button.passive{
- background-color: ;
+
+.menu-tab button.passive {
+	background-color:;
 }
 /* Change background color of buttons on hover */
 .menu-tab button:hover {
 	background-color: #ddd;
 }
-
 
 /* Style the tab content */
 .menu-tabcontent {
@@ -69,17 +70,37 @@
 	outline: none;
 	cursor: pointer;
 	padding: 14px 16px;
+	color: white;
+	width: 24%;
 	transition: 0.3s;
 	font-size: 17px;
 }
 
+.add-btn {
+	background-color: #4CAF50;
+	color: white;
+	padding: 14px 20px;
+	margin: 8px 0;
+	border: none;
+	cursor: pointer;
+	width: 15%;
+}
+
+.add-txt {
+	width: 40%;
+	margin-bottom: 20px;
+	padding: 12px;
+	border: 1px solid #ccc;
+}
+
+}
 /* Change background color of buttons on hover */
 .action-menu button:hover {
 	background-color: #ddd;
 }
 
 .action-menu button.active {
-  background-color: DodgerBlue;
+	background-color: DodgerBlue;
 }
 
 /* Style the tab content */

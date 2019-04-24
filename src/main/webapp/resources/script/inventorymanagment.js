@@ -29,19 +29,38 @@ $('button.menu').click( function() {
 	}
 	/* Action Menu and tab End */	
 	$('.open-button').click(function (){
-		$($(this).parent().children('div.chat-popup')).css('display', 'block');
+		$($(this).parent().children('div.search-wizard')).css('display', 'block');
 	});
 	$('.close-search').click(function (){
-		$($(this).parent()).parent('div.chat-popup').css('display', 'none');
+		$($(this).parent()).parent('div.search-wizard').css('display', 'none');
 	});
 	
 	/* Document ready end */
 });
-function add(action,formId){
+
+function search(searchFormid){
+	var searchForm  = $(searchFormid);
 	$.ajax({
-		url : "/category/add",
-		data :  $('#'+formId).serialize(),
-		type : "POST",
+		url : $(searchForm).attr('action'),
+		data : searchForm.serialize(),
+		type : $(searchForm).attr('method'),
+		cache : false,
+		success : function(response) {
+			console.log(response);
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			  
+		}
+	});
+
+}
+
+function add(formId){
+	var addForm  = $(formId);
+	$.ajax({
+		url : $(addForm).attr('action'),
+		data : addForm.serialize(),
+		type : $(addForm).attr('method'),
 		cache : false,
 		success : function(response) {
 			if(response.hasOwnProperty('Error')){
@@ -51,9 +70,7 @@ function add(action,formId){
 			}
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			  console.log(jqXHR.status);
-			  console.log(textStatus);
-			  console.log(errorThrown);
+			popSnackBar(jqXHR.status + ' : ' + textStatus ,'Red');
 		}
 	})
 }
