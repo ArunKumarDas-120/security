@@ -19,7 +19,7 @@
 			<h3>Add category</h3>
 			<hr>
 			<div>
-				<form id="addCategoryForm" name="categoryDto" action="/category/add" method="post">
+				<form id="addCategoryForm" name="categoryDto" action="/category/add" method="post" class="allTrue">
 					<input type="text" placeholder="Category" name="catagoryName"
 						value="" id="catagoryName" class="add-txt" required>
 					<button type="button"
@@ -31,15 +31,17 @@
 			<h3>update category</h3>
 			<hr>
 			<div class="chat-popup search-wizard">
-			  <form action="/category/search" name="categoryDto" id="categorySearchForm" method="post">
+			  <form action="/category/search" name="categoryDto" id="categorySearchForm" method="post" class="anyTrue">
 			    <label for="msg"><b>Search</b></label>
 			    <input type="text" placeholder="Type Criteria...."  class='serach' name="catagoryName"
 						 id="catagoryName" class='serach' required>
-			    <button type="button" class="btn" onclick="search('#categorySearchForm')">Search</button>
+			    <button type="button" class="btn" onclick="search('#categorySearchForm','#cat-searchResult')">Search</button>
 			    <button type="button" class="btn cancel close-search">Close</button>
 			  </form>
 			</div>
 			<button class="open-button" >Search</button>
+			<div id="cat-searchResult">
+			</div>
 		</div>
 	</div>
 	<div id="company" class="menu-tabcontent close">
@@ -66,12 +68,13 @@
 			  <form action="/company/search" method="post"  id="companySearchForm" name="companyDto">
 			    <label for="msg"><b>Search</b></label>
 			    <input type="text" placeholder="Type Criteria...."  class='serach' name="companyName" required>
-			     <button type="button" class="btn" onclick="search('#companySearchForm')">Search</button>
+			     <button type="button" class="btn" onclick="search('#companySearchForm','#comp-searchResult')">Search</button>
 			    <button type="button" class="btn cancel close-search">Close</button>
 			  </form>
 			</div>
 			<button class="open-button" >Search</button>
-			
+			<div id="comp-searchResult">
+			</div>
 		</div>
 	</div>
 	<div id="product" class="menu-tabcontent close">
@@ -82,12 +85,49 @@
 		<div id="add" class="action-menu-tabcontent open">
 			<h3>Add product</h3>
 			<hr>
+			<div class="container addprodContainer">
+			  <form action="/product/add"  method="post" id="addProdcutForm" name="productDto" class="anyTrue">
+			        <div class="row">
+			          <div class="col">
+			            <label class="product-label">Product Name</label>
+			            <input type="text" class="product-text" id="productName" name="productName" placeholder="ProductName...">
+			            <label class="product-label">Serial Number</label>
+			            <input type="text" class="product-text" id="productSerialNumber" name="productSerialNumber" placeholder="SerialNumber...">
+			            <label class="product-label">Model Number</label>
+			            <input type="text"  class="product-text" id="productModelNumber" name="productModelNumber" placeholder="ModelNumber...">
+			          </div>
+			          <div class="col">
+			            <label class="product-label">Category</label>
+			            <select class="select-css" name="catogery.catagoryId">
+							<option>--Select--</option>
+							<c:if test="${not empty listOfCategory}">
+								<c:forEach items="${listOfCategory}" var="category">
+									<option value="${category.catagoryId}">${category.catagoryName}</option>
+								</c:forEach>
+							</c:if>
+						</select>
+			            <label class="product-label">Company</label>
+			            <select class="select-css" name="company.companyId">
+							<option>--Select--</option>
+							<c:if test="${not empty listOfCompany}">
+								<c:forEach items="${listOfCompany}" var="company">
+									<option value="${company.companyId}">${company.companyName}</option>
+								</c:forEach>
+							</c:if>
+						</select>
+						<label class="product-label">Pricer</label>
+			            <input type="text"  class="product-text" id="productPrice" name="productPrice" placeholder="price..">
+			          </div>   
+			        </div>
+        			<input type="button" value="Add" class="product-btn add" onclick="add('#addProdcutForm')">
+     		 </form>
+			</div>
 		</div>
 		<div id="modify" class="action-menu-tabcontent close">
 			<h3>update product</h3>
 			<hr>
 			<div class="search-wizard container">
-			  <form action="/product/search"  method="post" id="productSearchForm" name="productDto">
+			  <form action="/product/search"  method="post" id="productSearchForm" name="productDto" class="anyTrue">
 			        <div class="row">
 			          <div class="col">
 			            <label class="product-label">Product Name</label>
@@ -118,11 +158,13 @@
 						</select>
 			          </div>   
 			        </div>
-        			<input type="button" value="Search" class="product-btn search" onclick="search('#productSearchForm')">
+        			<input type="button" value="Search" class="product-btn search" onclick="search('#productSearchForm','#prod-searchResult')">
 					<input type="button" value="Cancel" class="product-btn cancel close-search">
      		 </form>
 			</div>
 			<button class="open-button" >Search</button>
+			<div id="prod-searchResult">
+			</div>
 		</div>
 	</div>
 </div>

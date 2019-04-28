@@ -1,9 +1,11 @@
 package com.target.service;
 
-import javax.transaction.Transactional;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.target.constants.TargetConstnats;
 import com.target.dao.ProductRepo;
 import com.target.dto.ProductDto;
 import com.target.entity.ProductEntity;
@@ -18,13 +20,19 @@ public class ProductService {
 		this.productRepo = productRepo;
 	}
 
-	@Transactional
-	public void addProduct(final ProductDto productDto) {
-		productRepo.save(BeanConverter.mapObject(productDto, ProductEntity.class));
+	public Map<String, String> addProduct(final ProductDto productDto) {
+		Map<String, String> result = new HashMap<>();
+		try {
+			productRepo.save(BeanConverter.mapObject(productDto, ProductEntity.class));
+			result.put(TargetConstnats.SCUCCESS, "Product Added..");
+		} catch (Exception e) {
+			result.put(TargetConstnats.ERROR, "Fail to save. System issue");
+		}
+		return result;
 	}
-	@Transactional
+
 	public void updateProduct(final ProductDto productDto) {
 		productRepo.save(BeanConverter.mapObject(productDto, ProductEntity.class));
 	}
-	
+
 }

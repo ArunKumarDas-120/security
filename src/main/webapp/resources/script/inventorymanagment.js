@@ -38,23 +38,38 @@ $('button.menu').click( function() {
 	/* Document ready end */
 });
 
-function search(searchFormid){
+function changeAction(ele){
+	if($(ele).hasClass('edit'))
+		$('div.flip-card-inner').addClass('revolve');
+	else
+		$('div.flip-card-inner').removeClass('revolve');
+}
+
+/* Search Action*/
+function search(searchFormid,resultlocation){
 	var searchForm  = $(searchFormid);
-	$.ajax({
+
+$.ajax({
 		url : $(searchForm).attr('action'),
 		data : searchForm.serialize(),
 		type : $(searchForm).attr('method'),
+		 dataType : 'html',
 		cache : false,
 		success : function(response) {
-			console.log(response);
+			html  = $.parseHTML(response);
+			table = $(html).find('table')
+			if($(table).find('tr').length > 1)
+				$(resultlocation).html(table);
+			else
+				popSnackBar('No result found.Please try different keyword.' ,'Green');
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			  
+			  popSnackBar(jqXHR.status + ' : ' + errorThrown ,'Red');
 		}
 	});
 
 }
-
+/*Add Action*/
 function add(formId){
 	var addForm  = $(formId);
 	$.ajax({
@@ -63,11 +78,8 @@ function add(formId){
 		type : $(addForm).attr('method'),
 		cache : false,
 		success : function(response) {
-			if(response.hasOwnProperty('Error')){
-				popSnackBar(response.Error,'Red');
-			}else{
-				popSnackBar(response.Success,'Green');
-			}
+			popSnackBar(response.hasOwnProperty('Error')?response.Error:response.Success,
+					response.hasOwnProperty('Error')?'Red':'Green');
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			popSnackBar(jqXHR.status + ' : ' + textStatus ,'Red');
