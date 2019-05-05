@@ -36,8 +36,18 @@ public class CategoryService {
 		return result;
 	}
 
-	public void updateCategory(final CategoryDto categoryDto) {
-		categoryRepo.save(BeanConverter.mapObject(categoryDto, CategoryEntity.class));
+	public Map<String, Object> updateCategory(final CategoryDto categoryDto) {
+		Map<String, Object> result = new HashMap<>();
+		try {
+			categoryRepo.save(BeanConverter.mapObject(categoryDto, CategoryEntity.class));
+			result.put(TargetConstnats.SCUCCESS, "Category updated");
+		} catch (DataIntegrityViolationException e) {
+			result.put(TargetConstnats.ERROR, "Category update failed");
+		} catch (Exception e) {
+			result.put(TargetConstnats.ERROR, "Fail to save. System issue");
+		}
+		result.put("Data", categoryDto);
+		return result;
 	}
 
 	public CategoryDto getCategory(int id) {
@@ -49,7 +59,7 @@ public class CategoryService {
 		return categoryRepo.findByCatagoryNameContaining(categoryDto.getCatagoryName()).stream()
 				.map(cat -> BeanConverter.mapObject(cat, CategoryDto.class)).collect(Collectors.toList());
 	}
-	
+
 	public List<CategoryDto> getAllCategory() {
 		return categoryRepo.findAll().stream().map(cat -> BeanConverter.mapObject(cat, CategoryDto.class))
 				.collect(Collectors.toList());

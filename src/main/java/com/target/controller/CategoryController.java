@@ -1,5 +1,7 @@
 package com.target.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.MediaType;
@@ -13,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.target.constants.TargetConstnats;
 import com.target.dto.CategoryDto;
+import com.target.dto.ResponseData;
 import com.target.service.CategoryService;
 
 @Controller
@@ -35,14 +39,30 @@ public class CategoryController {
 
 	@PostMapping(value = { "/update" })
 	@PreAuthorize("hasAuthority('Admin')")
-	public void updateCategory(@ModelAttribute("categoryDto") final CategoryDto categoryDto) {
-		categoryService.updateCategory(categoryDto);
+	public ModelAndView updateCategory(@ModelAttribute("categoryDto") final CategoryDto categoryDto) {
+		Map<String, Object> result = categoryService.updateCategory(categoryDto);
+		ModelAndView mav = new ModelAndView("categorySearchresult");
+		ResponseData<CategoryDto> responseData = new ResponseData<>(
+				result.containsKey(TargetConstnats.SCUCCESS) ? TargetConstnats.SCUCCESS : TargetConstnats.ERROR,
+				(result.containsKey(TargetConstnats.SCUCCESS) ? (String) result.get(TargetConstnats.SCUCCESS)
+						: (String) result.get(TargetConstnats.ERROR)));
+		result.computeIfPresent("Data", (K,V) -> {
+			List<CategoryDto> data = new ArrayList<>();
+			data.add((CategoryDto) V);
+			responseData.setListOfData(data);
+			return V;
+		});
+		mav.addObject("result", responseData);
+		return mav;
 	}
 
 	@PostMapping(value = { "/search" })
 	public ModelAndView search(@ModelAttribute("categoryDto") final CategoryDto categoryDto) {
 		ModelAndView mav = new ModelAndView("categorySearchresult");
-		mav.addObject("result", categoryService.searchCategory(categoryDto));
+		ResponseData<CategoryDto> responseData = new ResponseData<>();
+		responseData.setStaus(TargetConstnats.SCUCCESS);
+		responseData.setListOfData(categoryService.searchCategory(categoryDto));
+		mav.addObject("result", responseData);
 		return mav;
 	}
 
