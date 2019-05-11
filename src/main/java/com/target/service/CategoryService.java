@@ -23,15 +23,16 @@ public class CategoryService {
 		this.categoryRepo = categoryRepo;
 	}
 
-	public Map<String, String> addCategory(final CategoryDto categoryDto) {
-		Map<String, String> result = new HashMap<>();
+	public Map<String, Object> addCategory(final CategoryDto categoryDto) {
+		Map<String, Object> result = new HashMap<>();
 		try {
-			categoryRepo.save(BeanConverter.mapObject(categoryDto, CategoryEntity.class));
+			result.put("Data", BeanConverter.mapObject(
+					categoryRepo.save(BeanConverter.mapObject(categoryDto, CategoryEntity.class)), CategoryDto.class));
 			result.put(TargetConstnats.SCUCCESS, "Category Added..");
 		} catch (DataIntegrityViolationException e) {
 			result.put(TargetConstnats.ERROR, "Category already exists");
 		} catch (Exception e) {
-			result.put(TargetConstnats.ERROR, "Fail to save. System issue");
+			result.put(TargetConstnats.ERROR, "Fail to save.System issue");
 		}
 		return result;
 	}

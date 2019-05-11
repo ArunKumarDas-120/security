@@ -23,10 +23,11 @@ public class CompanyService {
 		this.companyRepo = companyRepo;
 	}
 
-	public Map<String, String> addCompany(final CompanyDto companyDto) {
-		Map<String, String> result = new HashMap<>();
+	public Map<String, Object> addCompany(final CompanyDto companyDto) {
+		Map<String, Object> result = new HashMap<>();
 		try {
-			companyRepo.save(BeanConverter.mapObject(companyDto, CompanyEntity.class));
+			result.put("Data", BeanConverter.mapObject(
+					companyRepo.save(BeanConverter.mapObject(companyDto, CompanyEntity.class)), CompanyDto.class));
 			result.put(TargetConstnats.SCUCCESS, "Company Added..");
 		} catch (DataIntegrityViolationException e) {
 			result.put(TargetConstnats.ERROR, "Company already exists");
@@ -36,8 +37,18 @@ public class CompanyService {
 		return result;
 	}
 
-	public void updateCompany(final CompanyDto companyDto) {
-		companyRepo.save(BeanConverter.mapObject(companyDto, CompanyEntity.class));
+	public Map<String, Object> updateCompany(final CompanyDto companyDto) {
+		Map<String, Object> result = new HashMap<>();
+		try {
+			companyRepo.save(BeanConverter.mapObject(companyDto, CompanyEntity.class));
+			result.put(TargetConstnats.SCUCCESS, "Company updated");
+		} catch (DataIntegrityViolationException e) {
+			result.put(TargetConstnats.ERROR, "Company update failed");
+		} catch (Exception e) {
+			result.put(TargetConstnats.ERROR, "Fail to save. System issue");
+		}
+		result.put("Data", companyDto);
+		return result;
 	}
 
 	public CompanyDto getCompany(final Integer companyid) {

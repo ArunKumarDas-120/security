@@ -38,14 +38,14 @@ $('button.menu').click( function() {
 	/* Document ready end */
 });
 
-let actionPerformed  = [];
-let oldValues = [];
+var actionPerformed  = [];
+var oldValues = [];
 function changeAction(currentElement,rowNumber,formAction){
 	var invokedAction = {'RowNumber':rowNumber , 'ActionFor': formAction};
 	if($(currentElement).hasClass('edit')){
 		if(actionPerformed.findIndex(currentElement => (currentElement.RowNumber != invokedAction.RowNumber) 
 				&& (currentElement.ActionFor == invokedAction.ActionFor)) == -1){
-			$($($(currentElement).closest('td')).children('div.flip-card')).children('div.flip-card-inner').addClass('revolve');
+			$(currentElement).closest('td').find('div.flip-card-inner').addClass('revolve');
 			oldValues.push({'Key': invokedAction , 'OldValue':$($(currentElement).closest('td')).closest('tr').html()});
 			actionPerformed.push(invokedAction);
 			$(currentElement).closest('tr').find('td.editable').each((index, element) =>$(element).find(':disabled').removeAttr('disabled'));
@@ -81,7 +81,21 @@ function changeAction(currentElement,rowNumber,formAction){
 								&& (currentElement.ActionFor == invokedAction.ActionFor)),1);
 						oldValues.splice(oldValues.findIndex(currentElement => (currentElement.Key.RowNumber == invokedAction.RowNumber) 
 								&& (currentElement.Key.ActionFor == invokedAction.ActionFor)),1);
-						$($($(currentElement).closest('td')).children('div.flip-card')).children('div.flip-card-inner').removeClass('revolve');
+						updatedRow  = $(html).find('table.searched-data tr:last')
+						$(currentElement).closest('tr').replaceWith(updatedRow);
+						let option = '<option value="${0}">${1}</option>';
+						$(updatedRow).find('td.editable').each((index, element) => {
+							option = option.replace('${'+index+'}' , $(element).find(':disabled').val());
+						});
+						switch (formAction) {
+							case '#updateCatagoryForm' :
+								updateCategoryDropDown(option);
+								break;
+
+							case '#updateCompanyForm' :
+								updateCompanyDropDown(option);
+								break;
+						}
 					}
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
@@ -131,11 +145,55 @@ function add(formId){
 		type : $(addForm).attr('method'),
 		cache : false,
 		success : function(response) {
-			popSnackBar(response.hasOwnProperty('Error')?response.Error:response.Success,
-					response.hasOwnProperty('Error')?'Red':'Green');
+			popSnackBar(response.statusMessage,
+					response.status == 'Error'?'Red':'Green');
+			if(response.status == 'Success'){
+				switch (formId) {
+					case '#addCategoryForm' :
+						var id = response.data.catagoryId;
+						var value = response.data.catagoryName;
+						updateCategoryDropDown(`<option value="${id}">${value}</option>`);
+						break;
+
+					case '#addCompanyForm' :
+						var id = response.data.companyId;
+						var value = response.data.companyName;
+						updateCompanyDropDown(`<option value="${id}">${value}</option>`);
+						break;
+				}
+			}
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			popSnackBar(jqXHR.status + ' : ' + textStatus ,'Red');
 		}
 	})
 }
+function updateCategoryDropDown(optionValue){
+var ele = $(optionValue);
+$('div.container select.category-with-id').each((index, selectElement) => {
+	found = false;
+	$(selectElement).find('option').each((index, optionElement) => {
+		if(!found && (optionElement.value == ele.val())){
+			$(optionElement).replaceWith(optionValue);
+			found =true;
+		}
+		});
+		if(!found)
+			$(selectElement).append(optionValue);		
+	});
+}
+
+function updateCompanyDropDown(optionValue){
+	var ele = $(optionValue);
+	$('div.container select.company').each((index, selectElement) => {
+		found = false;
+		$(selectElement).find('option').each((index, optionElement) => {
+			if(!found && (optionElement.value == ele.val())){
+				$(optionElement).replaceWith(optionValue);
+				found =true;
+			}
+			});
+			if(!found)
+				$(selectElement).append(optionValue);		
+		});
+	}

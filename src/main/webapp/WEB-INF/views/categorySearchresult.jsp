@@ -2,7 +2,7 @@
 	pageEncoding="ISO-8859-1"%>
 <%@include file="/WEB-INF/views/common.jsp"%>
 <div id="result">
-<input type="hidden" disabled id="responseMessage" class="${result.staus}" value="${result.stausMessage}">
+<input type="hidden" disabled id="responseMessage" class="${result.status}" value="${result.statusMessage}">
 	<form action="/category/update" method="Post" name="categoryDto" id="updateCatagoryForm">
 		<table class="searched-data">
 			<thead>

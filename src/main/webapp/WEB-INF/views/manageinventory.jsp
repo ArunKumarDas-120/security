@@ -98,7 +98,7 @@
 			          </div>
 			          <div class="col">
 			            <label class="product-label">Category</label>
-			            <select class="select-css" name="catogery.catagoryId">
+			            <select class="select-css category category-with-id" name="catogery.catagoryId">
 							<option>--Select--</option>
 							<c:if test="${not empty listOfCategory}">
 								<c:forEach items="${listOfCategory}" var="category">
@@ -107,7 +107,7 @@
 							</c:if>
 						</select>
 			            <label class="product-label">Company</label>
-			            <select class="select-css" name="company.companyId">
+			            <select class="select-css company" name="company.companyId">
 							<option>--Select--</option>
 							<c:if test="${not empty listOfCompany}">
 								<c:forEach items="${listOfCompany}" var="company">
@@ -139,20 +139,20 @@
 			          </div>
 			          <div class="col">
 			            <label class="product-label">Category</label>
-			            <select class="select-css" name="catogery.catagoryName">
+			            <select class="select-css category category-with-id" name="catogery.catagoryName">
 							<option>--Select--</option>
 							<c:if test="${not empty listOfCategory}">
 								<c:forEach items="${listOfCategory}" var="category">
-									<option value="${category.catagoryName}">${category.catagoryName}</option>
+									<option value="${category.catagoryId}">${category.catagoryName}</option>
 								</c:forEach>
 							</c:if>
 						</select>
 			            <label class="product-label">Company</label>
-			            <select class="select-css" name="company.companyName">
+			            <select class="select-css company" name="company.companyName">
 							<option>--Select--</option>
 							<c:if test="${not empty listOfCompany}">
 								<c:forEach items="${listOfCompany}" var="company">
-									<option value="${company.companyName}">${company.companyName}</option>
+									<option value="${company.companyId}">${company.companyName}</option>
 								</c:forEach>
 							</c:if>
 						</select>

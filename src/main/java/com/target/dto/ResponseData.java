@@ -6,8 +6,8 @@ import java.util.List;
 public class ResponseData<T> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private String staus;
-	private String stausMessage;
+	private String status;
+	private String statusMessage;
 	private T data;
 	private List<T> listOfData;
 
@@ -15,32 +15,40 @@ public class ResponseData<T> implements Serializable {
 
 	}
 
-	public ResponseData(String staus, String stausMessage) {
-		this.staus = staus;
-		this.stausMessage = stausMessage;
+	public ResponseData(String status, String statusMessage) {
+		this.status = status;
+		this.statusMessage = statusMessage;
 
 	}
 
-	public ResponseData(String staus, String stausMessage, T data) {
-		this.staus = staus;
-		this.stausMessage = stausMessage;
+	public ResponseData(String staus, String statusMessage, T data) {
+		this.status = staus;
+		this.statusMessage = statusMessage;
 		this.data = data;
 	}
 
 	public String getStaus() {
-		return staus;
+		return status;
 	}
 
 	public void setStaus(String staus) {
-		this.staus = staus;
+		this.status = staus;
 	}
 
-	public String getStausMessage() {
-		return stausMessage;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setStausMessage(String stausMessage) {
-		this.stausMessage = stausMessage;
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getStatusMessage() {
+		return statusMessage;
+	}
+
+	public void setStatusMessage(String statusMessage) {
+		this.statusMessage = statusMessage;
 	}
 
 	public T getData() {

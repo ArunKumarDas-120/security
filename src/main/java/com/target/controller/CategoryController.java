@@ -33,8 +33,14 @@ public class CategoryController {
 	@ResponseBody
 	@PostMapping(value = { "/add" }, produces = { MediaType.APPLICATION_JSON_VALUE })
 	@PreAuthorize("hasAuthority('Admin')")
-	public Map<String, String> addCategory(@ModelAttribute("categoryDto") final CategoryDto categoryDto) {
-		return categoryService.addCategory(categoryDto);
+	public ResponseData<CategoryDto> addCategory(@ModelAttribute("categoryDto") final CategoryDto categoryDto) {
+		Map<String, Object> result = categoryService.addCategory(categoryDto);
+		ResponseData<CategoryDto> responseData = extractStatus(result);
+		result.computeIfPresent("Data", (K, V) -> {
+			responseData.setData((CategoryDto) V);
+			return V;
+		});
+		return responseData;
 	}
 
 	@PostMapping(value = { "/update" })
@@ -42,11 +48,8 @@ public class CategoryController {
 	public ModelAndView updateCategory(@ModelAttribute("categoryDto") final CategoryDto categoryDto) {
 		Map<String, Object> result = categoryService.updateCategory(categoryDto);
 		ModelAndView mav = new ModelAndView("categorySearchresult");
-		ResponseData<CategoryDto> responseData = new ResponseData<>(
-				result.containsKey(TargetConstnats.SCUCCESS) ? TargetConstnats.SCUCCESS : TargetConstnats.ERROR,
-				(result.containsKey(TargetConstnats.SCUCCESS) ? (String) result.get(TargetConstnats.SCUCCESS)
-						: (String) result.get(TargetConstnats.ERROR)));
-		result.computeIfPresent("Data", (K,V) -> {
+		ResponseData<CategoryDto> responseData = extractStatus(result);
+		result.computeIfPresent("Data", (K, V) -> {
 			List<CategoryDto> data = new ArrayList<>();
 			data.add((CategoryDto) V);
 			responseData.setListOfData(data);
@@ -74,5 +77,12 @@ public class CategoryController {
 	@GetMapping(value = { "/all" })
 	public void getAllCategory() {
 		categoryService.getAllCategory();
+	}
+
+	private ResponseData<CategoryDto> extractStatus(Map<String, Object> payload) {
+		return new ResponseData<>(
+				payload.containsKey(TargetConstnats.SCUCCESS) ? TargetConstnats.SCUCCESS : TargetConstnats.ERROR,
+				(payload.containsKey(TargetConstnats.SCUCCESS) ? (String) payload.get(TargetConstnats.SCUCCESS)
+						: (String) payload.get(TargetConstnats.ERROR)));
 	}
 }
